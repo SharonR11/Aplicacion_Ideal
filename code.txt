@@ -1,1 +1,3 @@
 npm init
+npm i --save express sequelize cors mysql2
+node server.js
