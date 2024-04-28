@@ -1,5 +1,4 @@
-const Usuario = require('./usuarioModel'); 
-const Resena = require('./resenaModel');
+// const {Usuario,Resena} = require('../models'); 
 
 module.exports = (sequelize, DataTypes) => {
     const ComentarioResena = sequelize.define('ComentariosReseñas', {
@@ -25,12 +24,12 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         }
     }, {
-        timestamps: false // Desactiva el seguimiento de fecha de creación y actualización
+        timestamps: false 
     });
-    ComentarioResena.belongsTo(Usuario, { 
-        foreignKey: 'UsuarioID', as: 'Usuario' }); // Asociación con el modelo de Roles
-    ComentarioResena.belongsTo(Resena, { 
-        foreignKey: 'ReseñaID', as: 'Resena' }); // Asociación con el modelo de ColorFondo
+    // ComentarioResena.belongsTo(Usuario, { 
+    //     foreignKey: 'UsuarioID', as: 'Usuario' }); 
+    // ComentarioResena.belongsTo(Resena, { 
+    //     foreignKey: 'ReseñaID', as: 'Resena' }); 
 
     return ComentarioResena;
 };

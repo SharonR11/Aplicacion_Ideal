@@ -1,10 +1,3 @@
-const Usuario = require('./usuarioModel'); 
-const Servicio = require('./servicioModel');
-const Institucion = require('./institucionoModel');
-const Distrito = require('./distritoModel');
-const PagosAdicionales = require('./pagosadicionalesModel');
-
-
 module.exports = (sequelize, DataTypes) => {
     const Cuarto = sequelize.define('Cuartos', {
         CuartoID: {
@@ -52,10 +45,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: true
         },
-        Fotos: {
-            type: DataTypes.ARRAY(DataTypes.STRING), // Cambia el tipo de datos a ARRAY de STRING
-            allowNull: false
-        },
         Baño: {
             type: DataTypes.BOOLEAN,
             allowNull: false
@@ -75,30 +64,7 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         timestamps: false // Desactiva el seguimiento de fecha de creación y actualización
     });
-    Cuarto.belongsTo(Usuario, {
-        foreignKey: 'UsuarioID',
-        as: 'Usuario'
-    });
     
-    Cuarto.belongsTo(Servicio, {
-        foreignKey: 'ServicioID',
-        as: 'Servicio'
-    });
-    
-    Cuarto.belongsTo(Institucion, {
-        foreignKey: 'InstitucionID',
-        as: 'Institucion'
-    });
-    
-    Cuarto.belongsTo(Distrito, {
-        foreignKey: 'DistritoID',
-        as: 'Distrito'
-    });
-    
-    Cuarto.belongsTo(PagosAdicionales, {
-        foreignKey: 'PagoAdicionalID',
-        as: 'PagosAdicionales'
-    });
     return Cuarto;
 };
 

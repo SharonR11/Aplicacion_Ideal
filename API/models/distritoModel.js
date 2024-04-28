@@ -1,4 +1,4 @@
-const Provincia = require('./provinciaModel'); 
+// const Provincia = require('./provinciaModel'); 
 
 module.exports = (sequelize, DataTypes) => {
 
@@ -20,10 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         timestamps: false // Desactiva el seguimiento de fecha de creación y actualización
     });
-    Distrito.belongsTo(Provincia, {
-        foreignKey: 'ProvinciaID',
-        as: 'Provincia'
-    });
+    
     return Distrito
 
 };

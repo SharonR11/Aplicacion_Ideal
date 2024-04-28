@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const Usuario = require('../models/usuarioModel');
+const db = require('../models')
+const Usuario = db.usuarios;
 const { validationResult } = require('express-validator');
 
 // Función para registrar arrendador
@@ -18,9 +19,18 @@ const signupArrendador = async (req, res) => {
             DocumentacionLegal
         } = req.body;
 
+        // Validación de entradas
+        if (!Nombres || !Apellidos || !DNI || !Correo || !Telefono || !Direccion || !Password) {
+            return res.status(400).json({ message: 'Todos los campos son requeridos.' });
+        }
+        // Validación de correo electrónico
+        if (!/^[^\s@]+@gmail\.com$/.test(Correo)) {
+            return res.status(400).json({ message: 'El correo electrónico debe ser de dominio @gmail.com.' });
+        }
         // Hash de la contraseña
         const hashedPassword = await bcrypt.hash(Password, 10);
 
+        // Crear nuevo arrendador
         const nuevoArrendador = await Usuario.create({
             Nombres,
             Apellidos,
@@ -28,16 +38,16 @@ const signupArrendador = async (req, res) => {
             Correo,
             Telefono,
             Direccion,
-            Password: hashedPassword, // Guarda la contraseña cifrada en la base de datos
-            RolID: 2, // ID del rol de arrendador
+            Password: hashedPassword, 
+            RolID: 2, 
             ContratoArrendamiento,
             DocumentacionLegal,
-            EstadoSesion: 0, // Aún no ha iniciado sesión
-            CorreoVerificado: 1, // Correo verificado por defecto
-            Estado: 1 // Usuario activo por defecto
+            EstadoSesion: false, 
+            CorreoVerificado: true, 
+            Estado: true
         });
 
-        // Genera el token JWT
+        // Generar token JWT
         const token = jwt.sign({ usuarioID: nuevoArrendador.UsuarioID }, process.env.JWT_SECRET);
 
         res.status(201).json({ message: 'Arrendador registrado exitosamente.', usuario: nuevoArrendador, token });
@@ -46,7 +56,6 @@ const signupArrendador = async (req, res) => {
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };
-
 
 const signupEstudiante = async (req, res) => {
     try {
@@ -60,12 +69,19 @@ const signupEstudiante = async (req, res) => {
             Password
         } = req.body;
 
+        // Validación de entradas
+        if (!Nombres || !Apellidos || !DNI || !Correo || !Telefono || !Direccion || !Password) {
+            return res.status(400).json({ message: 'Todos los campos son requeridos.' });
+        }
+
         if (!/^[\w-]+(\.[\w-]+)*@tecsup\.edu\.pe$/.test(Correo)) {
             return res.status(400).json({ message: 'El correo electrónico debe ser de dominio institucional.' });
         }
+
         // Hash de la contraseña
         const hashedPassword = await bcrypt.hash(Password, 10);
 
+        // Crear nuevo estudiante
         const nuevoEstudiante = await Usuario.create({
             Nombres,
             Apellidos,
@@ -73,14 +89,14 @@ const signupEstudiante = async (req, res) => {
             Correo,
             Telefono,
             Direccion,
-            Password: hashedPassword, // Guarda la contraseña cifrada en la base de datos
-            RolID: 3, // ID del rol de estudiante
-            EstadoSesion: 0, // Aún no ha iniciado sesión
-            CorreoVerificado: 1, // Correo verificado por defecto
-            Estado: 1 // Usuario activo por defecto
+            Password: hashedPassword, 
+            RolID: 3, 
+            EstadoSesion: false, 
+            CorreoVerificado: true, 
+            Estado: true
         });
 
-        // Genera el token JWT
+        // Generar token JWT
         const token = jwt.sign({ usuarioID: nuevoEstudiante.UsuarioID }, process.env.JWT_SECRET);
 
         res.status(201).json({ message: 'Estudiante registrado exitosamente.', usuario: nuevoEstudiante, token });
@@ -89,10 +105,6 @@ const signupEstudiante = async (req, res) => {
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };
-
-
-
-
 
 // Función para iniciar sesión
 const login = async (req, res) => {

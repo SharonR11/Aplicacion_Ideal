@@ -1,5 +1,5 @@
-const Usuario = require('./usuarioModel'); 
-const Cuarto = require('./cuartoModel'); 
+// const Usuario = require('./usuarioModel'); 
+// const Cuarto = require('./cuartoModel'); 
 
 module.exports = (sequelize, DataTypes) => {
 
@@ -37,15 +37,15 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         timestamps: false // Desactiva el seguimiento de fecha de creación y actualización
     });
-    Resena.belongsTo(Usuario, {
-        foreignKey: 'UsuarioID',
-        as: 'Usuario'
-    });
+    // Resena.belongsTo(Usuario, {
+    //     foreignKey: 'UsuarioID',
+    //     as: 'Usuario'
+    // });
     
-    Resena.belongsTo(Cuarto, {
-        foreignKey: 'CuartoID',
-        as: 'Cuarto'
-    });
+    // Resena.belongsTo(Cuarto, {
+    //     foreignKey: 'CuartoID',
+    //     as: 'Cuarto'
+    // });
 
     return Resena
 

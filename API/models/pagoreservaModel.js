@@ -1,4 +1,4 @@
-const Reserva = require('./reservaModel'); 
+// const Reserva = require('./reservaModel'); 
 
 module.exports = (sequelize, DataTypes) => {
 
@@ -37,10 +37,10 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         timestamps: false // Desactiva el seguimiento de fecha de creación y actualización
     });
-    PagoReserva.belongsTo(Reserva, {
-        foreignKey: 'ReservaID',
-        as: 'Reserva'
-    });
+    // PagoReserva.belongsTo(Reserva, {
+    //     foreignKey: 'ReservaID',
+    //     as: 'Reserva'
+    // });
 
     return PagoReserva
 

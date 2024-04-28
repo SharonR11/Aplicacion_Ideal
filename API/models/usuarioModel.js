@@ -1,6 +1,3 @@
-const Role = require('./roleModel'); 
-const ColorFondo = require('./colorfondoModel')
-
 
 module.exports = (sequelize, DataTypes) => {
     const Usuario = sequelize.define('Usuario', {
@@ -35,22 +32,23 @@ module.exports = (sequelize, DataTypes) => {
         },
         FechaCreacion: {
             type: DataTypes.DATE,
-            allowNull: true
+            allowNull: true,
+            defaultValue: DataTypes.NOW
         },
         UltimaActividad: {
             type: DataTypes.DATE,
             allowNull: true
         },
         ContratoArrendamiento: {
-            type: DataTypes.BLOB,
+            type: DataTypes.STRING,
             allowNull: true
         },
         DocumentacionLegal: {
-            type: DataTypes.BLOB,
+            type: DataTypes.STRING,
             allowNull: true
         },
         FotoUsuario: {
-            type: DataTypes.BLOB,
+            type: DataTypes.STRING,
             allowNull: true
         },
         ColorID: {
@@ -88,11 +86,6 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         timestamps: false // Desactiva el seguimiento de fecha de creación y actualización
     });
-
-    Usuario.belongsTo(Role, { 
-        foreignKey: 'RolID', as: 'Rol' }); // Asociación con el modelo de Roles
-    Usuario.belongsTo(ColorFondo, { 
-        foreignKey: 'ColorID', as: 'ColorFondo' }); // Asociación con el modelo de ColorFondo
 
     return Usuario;
 };

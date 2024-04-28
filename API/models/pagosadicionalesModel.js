@@ -1,5 +1,5 @@
-const Usuario = require('./usuarioModel'); 
-const TipoPago = require('./tipopagoModel');
+// const Usuario = require('./usuarioModel'); 
+// const TipoPago = require('./tipopagoModel');
 
 module.exports = (sequelize, DataTypes) => {
 
@@ -50,15 +50,15 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         timestamps: false // Desactiva el seguimiento de fecha de creación y actualización
     });
-    PagoAdicional.belongsTo(Usuario, {
-        foreignKey: 'ArrendadorID',
-        as: 'Arrendador'
-    });
+    // PagoAdicional.belongsTo(Usuario, {
+    //     foreignKey: 'ArrendadorID',
+    //     as: 'Arrendador'
+    // });
     
-    PagoAdicional.belongsTo(TipoPago, {
-        foreignKey: 'TipoPagoID',
-        as: 'TipoPago'
-    });
+    // PagoAdicional.belongsTo(TipoPago, {
+    //     foreignKey: 'TipoPagoID',
+    //     as: 'TipoPago'
+    // });
 
     return PagoAdicional
 

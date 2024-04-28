@@ -2,12 +2,22 @@ const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/authRouter.js');
 const rolesRoutes = require('./routes/rolesRouter.js');
+const createInitialData = require('./libs/initial.js');
+require('dotenv').config();
 
 const app = express();
 app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Llama a la función para crear Datos iniciales
+createInitialData()
+    .then(() => {
+        console.log('Datos iniciales creados exitosamente.');
+    })
+    .catch((error) => {
+        console.error('Error al crear Datos iniciales:', error);
+    });
 
 
 // Rutas de autenticación
@@ -23,4 +33,6 @@ const PORT = process.env.PORT || 8080;
 // server
 app.listen(PORT, () => {
     console.log(`server is running on port ${PORT}`);
+    console.log(process.env.JWT_SECRET);
+
 });

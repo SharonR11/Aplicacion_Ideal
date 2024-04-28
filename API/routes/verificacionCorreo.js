@@ -1,11 +1,10 @@
 // routes/verificacionCorreo.js
-import express from 'express';
-import verificacionCorreoController from '../controllers/verificacionCorreoController.js';
-
+const express = require('express');
 const router = express.Router();
+const verificacionController = require('../controllers/verificacionController');
+
 
 // Rutas de verificación de correo
-router.post('/enviar-correo', verificacionCorreoController.enviarCorreoVerificacion);
-router.get('/confirmar/:token', verificacionCorreoController.confirmarVerificacion);
-
+router.post('/enviar-codigo-verificacion', verificacionController.enviarCodigoVerificacion);
+router.post('/verificar-codigo', verificacionController.verificarCodigo);
 export default router;

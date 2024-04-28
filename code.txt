@@ -5,3 +5,5 @@ node server.js
 npm install jsonwebtoken
 npm install bcryptjs
 npm install express-validator
+npm install dotenv
+npm install nodemailer

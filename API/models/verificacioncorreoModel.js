@@ -1,4 +1,4 @@
-const Usuario = require('./usuarioModel'); 
+// const Usuario = require('./usuarioModel'); 
 
 module.exports = (sequelize, DataTypes) => {
     const VerificacionCorreo = sequelize.define("VerificacionCorreo", {
@@ -38,11 +38,6 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {
         timestamps: false // Desactiva el seguimiento de fecha de creación y actualización
-    });
-
-    VerificacionCorreo.belongsTo(Usuario, {
-        foreignKey: 'UsuarioID',
-        as: 'Usuario'
     });
 
     return VerificacionCorreo;
