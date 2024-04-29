@@ -1,6 +1,4 @@
 const Usuario = require('../models/usuarioModel');
-const Role = require('../models/roleModel');
-const ColorFondo = require('../models/colorfondoModel');
 
 // Función para registrar un nuevo usuario
 const registrarUsuario = async (req, res) => {

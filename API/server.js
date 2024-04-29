@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/authRouter.js');
 const rolesRoutes = require('./routes/rolesRouter.js');
+const verificacionCorreo = require('./routes/verificacionCorreoRouter.js');
+
 const createInitialData = require('./libs/initial.js');
 require('dotenv').config();
 
@@ -24,7 +26,8 @@ createInitialData()
 app.use('/api/auth', authRoutes);
 // Rutas de roles
 app.use('/api/roles', rolesRoutes);
-
+// Rutas de Verificar Email
+app.use('/api/correo', verificacionCorreo);
 
 
 // port

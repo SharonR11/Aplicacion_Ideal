@@ -1,6 +1,9 @@
-const VerificacionCorreo = require('../models/verificacioncorreoModel');
 const nodemailer = require('nodemailer');
+const db = require('../models')
+const VerificacionCorreo = db.verificacioncorreos;
+const Usuario = db.usuarios;
 const { Op } = require('sequelize');
+const {buscarPorId  } = require('../controllers/arrendadorController');
 
 // Función para generar un código de verificación de 6 dígitos
 const generarCodigoVerificacion = () => {
@@ -13,13 +16,14 @@ const enviarCorreoVerificacion = async (correoDestino, codigoVerificacion) => {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'tu_correo@gmail.com', // Coloca aquí tu dirección de correo electrónico
-                pass: 'tu_contraseña' // Coloca aquí tu contraseña de correo electrónico
+                //user: 'liah3r14@gmail.com', // Coloca aquí tu dirección de correo electrónico
+                user: '@gmail.com',
+                pass: '' // Coloca aquí tu contraseña de correo electrónico
             }
         });
 
         const mailOptions = {
-            from: 'tu_correo@gmail.com', // Coloca aquí tu dirección de correo electrónico
+            from: '@gmail.com', // Coloca aquí tu dirección de correo electrónico
             to: correoDestino,
             subject: 'Código de verificación',
             text: `Tu código de verificación es: ${codigoVerificacion}`
@@ -42,7 +46,7 @@ const generarYEnviarCodigoVerificacion = async (usuarioID, correoDestino) => {
             UsuarioID: usuarioID,
             Token: codigoVerificacion,
             FechaCreacion: new Date(),
-            FechaExpiracion: new Date(Date.now() + 10 * 60000), // El código expira en 10 minutos
+            FechaExpiracion: new Date(Date.now() + 30 * 60000), // El código expira en 10 minutos
             EstadoToken: 'Pendiente',
             TipoToken: 'VerificacionCorreo'
         });
@@ -58,8 +62,20 @@ const generarYEnviarCodigoVerificacion = async (usuarioID, correoDestino) => {
 };
 
 // Función para verificar el código de verificación ingresado por el usuario
-const verificarCodigoVerificacion = async (usuarioID, codigoVerificacion) => {
+const verificarCodigoVerificacion = async (req, res) => {
+    const { usuarioID, codigoVerificacion } = req.body; 
     try {
+        //console.log("Verificando código de verificación para el usuario:", usuarioID);
+        //console.log("Código de verificación a verificar:", codigoVerificacion);
+        if (typeof usuarioID !== 'string') {
+            throw new Error('El usuarioID debe ser un string.');
+        }
+        // Convertir codigoVerificacion a cadena de texto si no lo es
+        if (typeof codigoVerificacion !== 'string') {
+            codigoVerificacion = codigoVerificacion.toString();
+            console.log("Código de verificación convertido a cadena de texto:", codigoVerificacion);
+        }
+
         // Busca el código de verificación en la base de datos
         const token = await VerificacionCorreo.findOne({
             where: {
@@ -75,15 +91,21 @@ const verificarCodigoVerificacion = async (usuarioID, codigoVerificacion) => {
             // Marca el token como utilizado
             await token.update({ EstadoToken: 'Utilizado' });
 
+            // Actualiza el campo CorreoVerificado del usuario arrendador
+            const usuario = await Usuario.findByPk(usuarioID);
+            if (usuario) {
+                await usuario.update({ CorreoVerificado: true });
+            }
             return true;
         } else {
             return false;
         }
     } catch (error) {
         console.error('Error al verificar el código de verificación:', error);
-        throw error;
+        res.status(500).json({ error: 'Error al verificar el código de verificación' });
     }
 };
+
 
 module.exports = {
     generarYEnviarCodigoVerificacion,

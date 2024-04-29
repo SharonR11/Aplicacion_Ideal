@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const db = require('../models')
 const Usuario = db.usuarios;
 const { validationResult } = require('express-validator');
+const { generarYEnviarCodigoVerificacion } = require('./verificacionController'); // Importa la función de generación y envío de código de verificación
 
 // Función para registrar arrendador
 const signupArrendador = async (req, res) => {
@@ -43,9 +44,12 @@ const signupArrendador = async (req, res) => {
             ContratoArrendamiento,
             DocumentacionLegal,
             EstadoSesion: false, 
-            CorreoVerificado: true, 
+            CorreoVerificado: false, //vvv
             Estado: true
         });
+        // Generar y enviar código de verificación
+        await generarYEnviarCodigoVerificacion(nuevoArrendador.UsuarioID, nuevoArrendador.Correo);
+
 
         // Generar token JWT
         const token = jwt.sign({ usuarioID: nuevoArrendador.UsuarioID }, process.env.JWT_SECRET);
