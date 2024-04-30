@@ -1,45 +1,41 @@
-const Usuario = require('../models/usuarioModel');
+const db = require('../models');
+const Usuario = db.usuarios;
 
-// Función para registrar un nuevo usuario
-const registrarUsuario = async (req, res) => {
+// Listar usuarios arrendadores
+const listarArrendadores = async (req, res) => {
     try {
-        const { Nombres, Apellidos, DNI, Correo, Telefono, Direccion, Password, RolID, ContratoArrendamiento, DocumentacionLegal, FotoUsuario, ColorID, PremiumStatus, FechaInicioPremium, FechaVencimientoPremium, EstadoSesion, CorreoVerificado, Estado } = req.body;
-        
-        // Verificar si el correo ya está registrado
-        const usuarioExistente = await Usuario.findOne({ where: { Correo } });
-        if (usuarioExistente) {
-            return res.status(400).json({ message: 'El correo electrónico ya está registrado.' });
-        }
-
-        // Crear el nuevo usuario en la base de datos
-        const nuevoUsuario = await Usuario.create({
-            Nombres,
-            Apellidos,
-            DNI,
-            Correo,
-            Telefono,
-            Direccion,
-            Password,
-            RolID,
-            ContratoArrendamiento,
-            DocumentacionLegal,
-            FotoUsuario,
-            ColorID,
-            PremiumStatus,
-            FechaInicioPremium,
-            FechaVencimientoPremium,
-            EstadoSesion,
-            CorreoVerificado,
-            Estado
-        });
-
-        res.status(201).json({ message: 'Usuario registrado exitosamente.', usuario: nuevoUsuario });
+        const arrendadores = await Usuario.findAll({ where: { RolID: 2 } });
+        res.status(200).json(arrendadores);
     } catch (error) {
-        console.error('Error al registrar usuario:', error);
+        console.error('Error al listar arrendadores:', error);
+        res.status(500).json({ message: 'Error interno del servidor.' });
+    }
+};
+
+// Listar usuarios estudiantes
+const listarEstudiantes = async (req, res) => {
+    try {
+        const estudiantes = await Usuario.findAll({ where: { RolID: 3 } });
+        res.status(200).json(estudiantes);
+    } catch (error) {
+        console.error('Error al listar estudiantes:', error);
+        res.status(500).json({ message: 'Error interno del servidor.' });
+    }
+};
+
+// Listar usuarios arrendadores y estudiantes
+const listarArrendadoresEstudiantes = async (req, res) => {
+    try {
+        const usuarios = await Usuario.findAll({ where: { RolID: [2, 3] } });
+        res.status(200).json(usuarios);
+    } catch (error) {
+        console.error('Error al listar arrendadores y estudiantes:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };
 
 module.exports = {
-    registrarUsuario
+    listarArrendadores,
+    listarEstudiantes,
+    listarArrendadoresEstudiantes
 };

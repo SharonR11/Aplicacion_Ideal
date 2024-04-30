@@ -41,6 +41,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN,
             allowNull: false
         },
+        FechaCreacion: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: DataTypes.NOW
+        },
         PagoAdicionalID: {
             type: DataTypes.INTEGER,
             allowNull: true

@@ -50,7 +50,6 @@ const signupArrendador = async (req, res) => {
         // Generar y enviar código de verificación
         await generarYEnviarCodigoVerificacion(nuevoArrendador.UsuarioID, nuevoArrendador.Correo);
 
-
         // Generar token JWT
         const token = jwt.sign({ usuarioID: nuevoArrendador.UsuarioID }, process.env.JWT_SECRET);
 
@@ -99,6 +98,8 @@ const signupEstudiante = async (req, res) => {
             CorreoVerificado: true, 
             Estado: true
         });
+        // Generar y enviar código de verificación
+        await generarYEnviarCodigoVerificacion(nuevoEstudiante.UsuarioID, nuevoEstudiante.Correo);
 
         // Generar token JWT
         const token = jwt.sign({ usuarioID: nuevoEstudiante.UsuarioID }, process.env.JWT_SECRET);
@@ -110,7 +111,6 @@ const signupEstudiante = async (req, res) => {
     }
 };
 
-// Función para iniciar sesión
 const login = async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -121,19 +121,27 @@ const login = async (req, res) => {
         const { email, password } = req.body;
 
         // Buscar al usuario por su correo electrónico
-        const user = await User.findOne({ where: { email } });
+        const user = await Usuario.findOne({ where: { Correo: email } });
         if (!user) {
             return res.status(400).json({ message: 'Credenciales inválidas' });
         }
 
+        // Verificar si el usuario tiene el correo verificado
+        if (!user.CorreoVerificado) {
+            return res.status(400).json({ message: 'Correo no verificado. Verifica tu correo electrónico para poder iniciar sesión.' });
+        }
+
         // Verificar la contraseña
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await bcrypt.compare(password, user.Password);
         if (!isMatch) {
             return res.status(400).json({ message: 'Credenciales inválidas' });
         }
 
+        // Actualizar el campo EstadoSesion a true
+        await user.update({ EstadoSesion: true });
+
         // Generar token de acceso
-        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ usuarioID: user.UsuarioID }, process.env.JWT_SECRET);
 
         res.json({ token });
     } catch (error) {
@@ -141,13 +149,63 @@ const login = async (req, res) => {
         res.status(500).json({ message: 'Error interno del servidor' });
     }
 };
-// Función para cerrar sesión
 const logout = async (req, res) => {
-    // Lógica para cerrar sesión
-    // Por ejemplo, eliminar el token de acceso del cliente
-    res.json({ message: 'Sesión cerrada exitosamente' });
+    try {
+        // Verificar si se proporciona un token en el encabezado de autorización
+        const authorizationHeader = req.headers.authorization;
+        if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
+            return res.status(401).json({ message: 'Acceso no autorizado. Token no proporcionado.' });
+        }
+
+        // Extraer el token del encabezado de autorización
+        const token = authorizationHeader.split(' ')[1];
+
+        // Verificar y decodificar el token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log('Token decodificado:', decoded);
+
+        // Verificar si el token es válido
+        if (!decoded || !decoded.usuarioID) {
+            return res.status(401).json({ message: 'Acceso no autorizado. Token inválido.' });
+        }
+
+        // Buscar al usuario por su ID
+        const user = await Usuario.findByPk(decoded.usuarioID);
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        // Actualizar el campo EstadoSesion a false
+        await user.update({ EstadoSesion: false });
+
+        res.json({ message: 'Sesión cerrada exitosamente' });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ message: 'Error interno del servidor' });
+    }
 };
 
+
+// const logout = async (req, res) => {
+//     try {
+//         // Obtener el usuario desde el token de autenticación
+//         const usuarioID = req.usuario.usuarioID; // Corregir la extracción de usuarioID
+
+//         // Buscar al usuario por su ID
+//         const user = await Usuario.findByPk(usuarioID);
+//         if (!user) {
+//             return res.status(404).json({ message: 'Usuario no encontrado' });
+//         }
+
+//         // Actualizar el campo EstadoSesion a false
+//         await user.update({ EstadoSesion: false });
+
+//         res.json({ message: 'Sesión cerrada exitosamente' });
+//     } catch (error) {
+//         console.error(error.message);
+//         res.status(500).json({ message: 'Error interno del servidor' });
+//     }
+// };
 
 
 // Función para verificar la validez de un token
@@ -170,23 +228,13 @@ const forgotPassword = async (req, res) => {
     // Lógica para solicitar un restablecimiento de contraseña
 };
 
-// Función para manejar el proceso de verificación del correo electrónico
-const verifyEmail = async (req, res) => {
-    // Lógica para verificar el correo electrónico
-};
 
-// Función para cerrar sesión en todos los dispositivos
-const logoutAllDevices = async (req, res) => {
-    // Lógica para cerrar sesión en todos los dispositivos
-};
 
 module.exports = {
     verifyToken,
     updateProfile,
     deleteAccount,
     forgotPassword,
-    verifyEmail,
-    logoutAllDevices,
     login,
     logout,
     signupArrendador,

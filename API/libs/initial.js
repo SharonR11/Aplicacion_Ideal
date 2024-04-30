@@ -8,7 +8,8 @@ const Institucion = db.instituciones;
 const Departamento = db.departamentos;
 const TipoPago = db.tipopagos;
 const Usuario = db.usuarios; 
-
+const Provincia = db.provincias;
+const Distrito = db.distritos;
 const createInitialData = async () => {
     try {
         // Crear usuario administrador
@@ -172,6 +173,97 @@ const createInitialData = async () => {
         } else {
             console.log('Los Departamentos ya existen en la base de datos.');
         }
+        const existingProvincias = await Provincia.findAll();
+        if (existingProvincias.length === 0) {
+            // Busca el ID del departamento de Lima
+            const lima = await Departamento.findOne({ where: { Nombre: 'Lima' } });
+
+            if (lima) {
+                // Crea los registros de provincias para el departamento de Lima
+                await Provincia.bulkCreate([
+                    { Nombre: 'Lima', DepartamentoID: lima.DepartamentoID },
+                    { Nombre: 'Callao', DepartamentoID: lima.DepartamentoID },
+                    { Nombre: 'Barranca', DepartamentoID: lima.DepartamentoID },
+                    { Nombre: 'Cajatambo', DepartamentoID: lima.DepartamentoID },
+                    { Nombre: 'Cañete', DepartamentoID: lima.DepartamentoID },
+                    { Nombre: 'Canta', DepartamentoID: lima.DepartamentoID },
+                    { Nombre: 'Huaral', DepartamentoID: lima.DepartamentoID },
+                    { Nombre: 'Huarochirí', DepartamentoID: lima.DepartamentoID },
+                    { Nombre: 'Huaura', DepartamentoID: lima.DepartamentoID },
+                    { Nombre: 'Oyón', DepartamentoID: lima.DepartamentoID },
+                    { Nombre: 'Yauyos', DepartamentoID: lima.DepartamentoID }
+                ]);
+
+                console.log('Las provincias de Lima se han creado exitosamente.');
+            } else {
+                console.log('El departamento de Lima no se encontró en la base de datos.');
+            }
+        } else {
+            console.log('Las provincias ya existen en la base de datos.');
+        }
+
+        const existingDistritos = await Distrito.findAll();
+        if (existingDistritos.length === 0) {
+            // Busca el ID de la provincia de Lima
+            const lima = await Provincia.findOne({ where: { Nombre: 'Lima' } });
+
+            if (lima) {
+                // Crea los registros de distritos para la provincia de Lima
+                await Distrito.bulkCreate([
+                    { Nombre: 'Ancón', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Ate', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Barranco', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Breña', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Carabayllo', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Chaclacayo', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Chorrillos', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Cieneguilla', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Comas', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'El Agustino', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Independencia', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Jesús María', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'La Molina', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'La Victoria', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Lima', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Lince', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Los Olivos', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Lurigancho', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Lurín', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Magdalena del Mar', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Miraflores', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Pachacámac', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Pucusana', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Pueblo Libre', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Puente Piedra', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Punta Hermosa', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Punta Negra', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Rímac', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'San Bartolo', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'San Borja', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'San Isidro', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'San Juan de Lurigancho', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'San Juan de Miraflores', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'San Luis', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'San Martín de Porres', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'San Miguel', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Santa Anita', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Santa María del Mar', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Santa Rosa', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Santiago de Surco', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Surquillo', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Villa el Salvador', ProvinciaID: lima.ProvinciaID },
+                    { Nombre: 'Villa María del Triunfo', ProvinciaID: lima.ProvinciaID }
+                ]);
+                
+
+                console.log('Los distritos de Lima se han creado exitosamente.');
+            } else {
+                console.log('La provincia de Lima no se encontró en la base de datos.');
+            }
+        } else {
+            console.log('Los distritos ya existen en la base de datos.');
+        }
+
 
         const existingTiposPagos = await TipoPago.findAll();
         if (existingTiposPagos.length === 0) {

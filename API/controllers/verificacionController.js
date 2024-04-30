@@ -13,21 +13,7 @@ const generarCodigoVerificacion = () => {
 // Función para enviar un correo electrónico con el código de verificación
 const enviarCorreoVerificacion = async (correoDestino, codigoVerificacion) => {
     try {
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                //user: 'liah3r14@gmail.com', // Coloca aquí tu dirección de correo electrónico
-                user: '@gmail.com',
-                pass: '' // Coloca aquí tu contraseña de correo electrónico
-            }
-        });
-
-        const mailOptions = {
-            from: '@gmail.com', // Coloca aquí tu dirección de correo electrónico
-            to: correoDestino,
-            subject: 'Código de verificación',
-            text: `Tu código de verificación es: ${codigoVerificacion}`
-        };
+        
 
         await transporter.sendMail(mailOptions);
     } catch (error) {

@@ -30,7 +30,7 @@ http://localhost:8080/api/auth/signup-arrendador
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSUQiOjksImlhdCI6MTcxNDEwNjY1NX0.uzqJ-oVTUzJxZtTXS7Fle_kpy4S9lDbAerueL3qIqdg
 
 
--------------Registro arrendador con verificacion correo------
+-------------Registro arrendador con envio de verificacion correo------
 http://localhost:8080/api/auth/signup-arrendador
 {
   "Nombres": "Marcos",
@@ -66,10 +66,22 @@ http://localhost:8080/api/auth/signup-arrendador
   },
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSUQiOjE4LCJpYXQiOjE3MTQzNjg2MjZ9.NA1n-zyN_HpATDbsJPr1SrEhAw4cO2O-5XQ9U1MAVmI"
 }
------------------
+----------------VERIFICAR CORREO-
 http://localhost:8080/api/correo/verificar-codigo
 
 {
     "usuarioID": 22,
     "codigoVerificacion": "473680"
 }
+------------LOGIN -----
+http://localhost:8080/api/auth/login
+{
+  "email": "m4rcos.leo201@gmail.com",
+  "password": "123456789"
+}
+-----RESPUESTA
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSUQiOjI0LCJpYXQiOjE3MTQ0NTU2OTB9.AZXZ5Uvp-pzNeLeSgOo9NQ_3wq0TszmnulIDqXd57zw"
+}
+-------------
+http://localhost:8080/api/auth/logout

@@ -18,13 +18,8 @@ module.exports = (sequelize, DataTypes) => {
         }
     
     }, {
-        timestamps: false // Desactiva el seguimiento de fecha de creación y actualización
+        timestamps: false 
     });
-    // ProvinciaModel.belongsTo(Departamento, {
-    //     foreignKey: 'DepartamentoID',
-    //     as: 'Departamento'
-    // });
-
     return Provincia
 
 }
