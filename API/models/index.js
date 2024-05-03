@@ -38,6 +38,7 @@ db.colorfondos = require('./colorfondoModel.js')(sequelize, DataTypes)
 db.usuarios = require('./usuarioModel.js')(sequelize, DataTypes)
 db.verificacioncorreos = require('./verificacioncorreoModel.js')(sequelize, DataTypes)
 db.servicios = require('./servicioModel.js')(sequelize, DataTypes)
+db.cuartoservicio  = require('./cuartoservicioModel.js')(sequelize, DataTypes)
 db.departamentos = require('./departamentoModel.js')(sequelize, DataTypes)
 db.provincias = require('./provinciaModel.js')(sequelize, DataTypes)
 db.distritos = require('./distritoModel.js')(sequelize, DataTypes)
@@ -91,10 +92,10 @@ db.usuarios.hasMany(db.cuartos, {
     foreignKey: 'UsuarioID',
     as: 'UsuarioCuartos'
 });
-db.servicios.hasMany(db.cuartos, {
-    foreignKey: 'ServicioID',
-    as: 'ServicioCuartos'
-});
+// db.servicios.hasMany(db.cuartos, {
+//     foreignKey: 'ServicioID',
+//     as: 'ServicioCuartos'
+// });
 db.instituciones.hasMany(db.cuartos, {
     foreignKey: 'InstitucionID',
     as: 'InstitucionCuartos'
@@ -193,10 +194,10 @@ db.cuartos.belongsTo(db.usuarios, {
     foreignKey: 'UsuarioID',
     as: 'cuartosUsuario'
 });
-db.cuartos.belongsTo(db.servicios, {
-    foreignKey: 'ServicioID',
-    as: 'cuartosServicio'
-});
+// db.cuartos.belongsTo(db.servicios, {
+//     foreignKey: 'ServicioID',
+//     as: 'cuartosServicio'
+// });
 db.cuartos.belongsTo(db.instituciones, {
     foreignKey: 'InstitucionID',
     as: 'cuartosInstitucion'
@@ -255,8 +256,26 @@ db.favoritos.belongsTo(db.cuartos, {
     as: 'favoritosCuarto'
 });
 
+//-----Cuartos y Servicios------
+db.cuartos.belongsToMany(db.servicios, {
+    through: 'CuartoServicios', // Nombre de la tabla de unión
+    foreignKey: 'CuartoID', // Nombre de la clave foránea en la tabla CuartoServicios que hace referencia a Cuartos
+    otherKey: 'ServicioID', // Nombre de la clave foránea en la tabla CuartoServicios que hace referencia a Servicios
+    as: 'servicios', // Alias para la relación
+    timestamps: false // Desactiva el seguimiento de fecha de creación y actualización en la tabla de unión
+});
+
+db.servicios.belongsToMany(db.cuartos, {
+    through: 'CuartoServicios', // Nombre de la tabla de unión
+    foreignKey: 'ServicioID', // Nombre de la clave foránea en la tabla CuartoServicios que hace referencia a Servicios
+    otherKey: 'CuartoID', // Nombre de la clave foránea en la tabla CuartoServicios que hace referencia a Cuartos
+    as: 'cuartos', // Alias para la relación
+    timestamps: false // Desactiva el seguimiento de fecha de creación y actualización en la tabla de unión
+});
+
 try {
-    db.sequelize.sync({ force: false })
+     //db.cuartos.sync({ alter: true }),
+     db.sequelize.sync({ force: false })
     .then(() => {
         console.log('yes re-sync done!')
     })

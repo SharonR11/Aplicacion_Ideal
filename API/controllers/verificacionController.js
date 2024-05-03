@@ -14,7 +14,6 @@ const generarCodigoVerificacion = () => {
 const enviarCorreoVerificacion = async (correoDestino, codigoVerificacion) => {
     try {
         
-
         await transporter.sendMail(mailOptions);
     } catch (error) {
         console.error('Error al enviar el correo electrónico de verificación:', error);
@@ -69,7 +68,7 @@ const verificarCodigoVerificacion = async (req, res) => {
                 Token: codigoVerificacion,
                 EstadoToken: 'Pendiente',
                 TipoToken: 'VerificacionCorreo',
-                FechaExpiracion: { [Op.gt]: new Date() } // Verifica si el código aún no ha expirado
+                FechaExpiracion: { [Op.gt]: new Date() } 
             }
         });
 

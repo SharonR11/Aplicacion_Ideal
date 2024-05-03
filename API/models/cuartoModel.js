@@ -21,6 +21,14 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(50),
             allowNull: true
         },
+        longitud:{
+            type: DataTypes.DECIMAL,
+            allowNull: true
+        },
+        latitud:{
+            type: DataTypes.DECIMAL,
+            allowNull: true
+        },
         Precio: {
             type: DataTypes.DECIMAL(10, 2),
             allowNull: false
@@ -41,11 +49,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN,
             allowNull: false
         },
-        FechaCreacion: {
-            type: DataTypes.DATE,
-            allowNull: false,
-            defaultValue: DataTypes.NOW
-        },
         PagoAdicionalID: {
             type: DataTypes.INTEGER,
             allowNull: true
@@ -54,10 +57,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN,
             allowNull: false
         },
-        ServicioID: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
+        // ServicioID: {
+        //     type: DataTypes.TEXT, // o DataTypes.STRING, dependiendo de tus necesidades
+        //     allowNull: true
+        // },
         InstitucionID: {
             type: DataTypes.INTEGER,
             allowNull: false
@@ -65,7 +68,12 @@ module.exports = (sequelize, DataTypes) => {
         DistritoID: {
             type: DataTypes.INTEGER,
             allowNull: false
-        }
+        },
+        FechaCreacion: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: DataTypes.NOW
+        },
     }, {
         timestamps: false // Desactiva el seguimiento de fecha de creación y actualización
     });

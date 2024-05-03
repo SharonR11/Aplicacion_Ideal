@@ -50,16 +50,6 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         timestamps: false // Desactiva el seguimiento de fecha de creación y actualización
     });
-    // PagoAdicional.belongsTo(Usuario, {
-    //     foreignKey: 'ArrendadorID',
-    //     as: 'Arrendador'
-    // });
-    
-    // PagoAdicional.belongsTo(TipoPago, {
-    //     foreignKey: 'TipoPagoID',
-    //     as: 'TipoPago'
-    // });
 
     return PagoAdicional
-
 }

@@ -12,6 +12,19 @@ const Provincia = db.provincias;
 const Distrito = db.distritos;
 const createInitialData = async () => {
     try {
+        // Verifica si ya existen registros en la tabla Role
+        const existingRoles = await Role.findAll();
+        if (existingRoles.length === 0) {
+            await Role.bulkCreate([
+                { Nombre: 'admin' },
+                { Nombre: 'arrendador' },
+                { Nombre: 'estudiante' }
+            ]);
+            console.log('Los roles se han creado exitosamente.');
+        } else {
+            console.log('Los roles ya existen en la base de datos.');
+        }
+
         // Crear usuario administrador
         const existingAdmin = await Usuario.findOne({ where: { RolID: 1 } });
         if (!existingAdmin) {
@@ -42,19 +55,7 @@ const createInitialData = async () => {
         } else {
             console.log('Ya existe un administrador en la base de datos.');
         }
-
-        // Verifica si ya existen registros en la tabla Role
-        const existingRoles = await Role.findAll();
-        if (existingRoles.length === 0) {
-            await Role.bulkCreate([
-                { Nombre: 'admin' },
-                { Nombre: 'arrendador' },
-                { Nombre: 'estudiante' }
-            ]);
-            console.log('Los roles se han creado exitosamente.');
-        } else {
-            console.log('Los roles ya existen en la base de datos.');
-        }
+      
 
         // Verifica si ya existen registros en la tabla Servicio
         const existingServicios = await Servicio.findAll();

@@ -47,16 +47,16 @@ http://localhost:8080/api/auth/signup-arrendador
 {
   "message": "Arrendador registrado exitosamente.",
   "usuario": {
-    "FechaCreacion": "2024-04-29T05:30:24.567Z",
+    "FechaCreacion": "2024-05-01T23:20:42.318Z",
     "PremiumStatus": false,
-    "UsuarioID": 18,
+    "UsuarioID": 6,
     "Nombres": "Marcos",
     "Apellidos": "Leon",
     "DNI": 12335678,
     "Correo": "m4rcos.leo201@gmail.com",
     "Telefono": "989654321",
     "Direccion": "Av. Lima 123",
-    "Password": "$2a$10$krgUXkptkOBhXxYj6N13.O3i5m59cHhcC8uOal2pF0hib8FZPIxjS",
+    "Password": "$2a$10$xtBGqM/HOyK9l.3i26ej6.JdDVjP1HwKsRDPb6lRQ6/Q/I/FJiKVq",
     "RolID": 2,
     "ContratoArrendamiento": "contenido del contrato en formato de cadena",
     "DocumentacionLegal": "contenido de la documentación legal en formato de cadena",
@@ -64,7 +64,7 @@ http://localhost:8080/api/auth/signup-arrendador
     "CorreoVerificado": false,
     "Estado": true
   },
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSUQiOjE4LCJpYXQiOjE3MTQzNjg2MjZ9.NA1n-zyN_HpATDbsJPr1SrEhAw4cO2O-5XQ9U1MAVmI"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSUQiOjYsImlhdCI6MTcxNDYwNTY0NH0.ENgIPI9K5HUDm83qBFzEwQtmHa2R4ws0M-lpxRyeU-w"
 }
 ----------------VERIFICAR CORREO-
 http://localhost:8080/api/correo/verificar-codigo
@@ -81,7 +81,7 @@ http://localhost:8080/api/auth/login
 }
 -----RESPUESTA
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSUQiOjI0LCJpYXQiOjE3MTQ0NTU2OTB9.AZXZ5Uvp-pzNeLeSgOo9NQ_3wq0TszmnulIDqXd57zw"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSUQiOjI0LCJpYXQiOjE3MTQ2MDE5NDF9.UtLBDcGtBFqXuxXTqPeyR5wwlj-2ZM0QimE_2sFLoa4"
 }
 -------------
 http://localhost:8080/api/auth/logout

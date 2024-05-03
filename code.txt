@@ -7,3 +7,8 @@ npm install bcryptjs
 npm install express-validator
 npm install dotenv
 npm install nodemailer
+npm i mercadopago
+
+--------------------------Workbench ----
+CREATE SCHEMA IF NOT EXISTS `ideal` DEFAULT CHARACTER SET utf8 ;
+USE `ideal` ;

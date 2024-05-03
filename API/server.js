@@ -5,8 +5,8 @@ const rolesRoutes = require('./routes/rolesRouter.js');
 const verificacionCorreo = require('./routes/verificacionCorreoRouter.js');
 const usuariosRouter = require('./routes/usuariosRouter.js');
 const cuartosRouter = require('./routes/cuartosRouter.js');
+const paymentRouter = require('./routes/payment.routes.js');
 
-const createInitialData = require('./libs/initial.js');
 require('dotenv').config();
 
 const app = express();
@@ -15,6 +15,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Llama a la función para crear Datos iniciales
+const createInitialData = require('./libs/initial.js');
+
 createInitialData()
     .then(() => {
         console.log('Datos iniciales creados exitosamente.');
@@ -22,6 +24,7 @@ createInitialData()
     .catch((error) => {
         console.error('Error al crear Datos iniciales:', error);
     });
+
 
 
 // Rutas de autenticación
@@ -32,9 +35,10 @@ app.use('/api/roles', rolesRoutes);
 app.use('/api/correo', verificacionCorreo);
 // Rutas de Usuarios
 app.use('/api/users', usuariosRouter);
-// Rutas de Usuarios
+// Rutas de Cuartos
 app.use('/api/cuartos', cuartosRouter);
-
+// Rutas de Pagos
+app.use('/api/payment', paymentRouter);
 
 
 // port
